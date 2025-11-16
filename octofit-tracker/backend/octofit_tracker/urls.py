@@ -14,8 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.http import JsonResponse
+import os
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', lambda request: JsonResponse({
+        'users': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/users/",
+        'teams': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/teams/",
+        'activities': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/activities/",
+        'leaderboard': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/leaderboard/",
+        'workouts': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/workouts/",
+    }), name='api_root'),
 ]
